@@ -2,34 +2,57 @@
   "deepin_repository": {
     "location": "https://mirrors.tuna.tsinghua.edu.cn/deepin/",
     "packages_files": [
+      "dists/stable/main/binary-i386/Packages",
       "dists/stable/non-free/binary-i386/Packages"
     ]
   },
   "host_repositories": {
-    "debian": {
+    "debian-stable": {
       "location": "https://mirrors.tuna.tsinghua.edu.cn/debian/",
       "packages_files": [
-        "dists/stable/main/binary-i386/Packages.gz"
+        "dists/stable/main/binary-i386/Packages.gz",
+        "dists/stable/main/binary-amd64/Packages.gz"
       ]
     },
-    "ubuntu": {
+    "debian-testing": {
+      "location": "https://mirrors.tuna.tsinghua.edu.cn/debian/",
+      "packages_files": [
+        "dists/testing/main/binary-i386/Packages.gz",
+        "dists/testing/main/binary-amd64/Packages.gz"
+      ]
+    },
+    "ubuntu-bionic": {
       "location": "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/",
       "packages_files": [
         "dists/bionic/main/binary-i386/Packages.gz",
-        "dists/bionic/universe/binary-i386/Packages.gz"
-      ],
-      "ignored_packages": [
-        "libjpeg62-turbo"
+        "dists/bionic/main/binary-amd64/Packages.gz",
+        "dists/bionic/universe/binary-i386/Packages.gz",
+        "dists/bionic/universe/binary-amd64/Packages.gz"
       ]
     }
   },
-  "ignored_packages": [
-    "deepin-wine64",
-    "libopencl-1.1-1",
-    "libopencl1"
-  ],
   "apps": [
-    "re+deepin\\..+",
-    "-deepin.net.cnki.cajviewer"
+    "deepin.com.weixin.work",
+    "deepin.com.qq.b.crm",
+    "deepin.cn.com.winrar",
+    "deepin.com.qq.rtx2015",
+    "deepin.com.foxmail",
+    "deepin.com.95579.cjsc",
+    "deepin.com.qq.im.light",
+    "deepin.com.taobao.aliclient.qianniu",
+    "deepin.org.foobar2000",
+    "deepin.com.qq.office",
+    "deepin.com.aaa-logo",
+    "deepin.com.baidu.pan",
+    "deepin.com.cmbchina",
+    "deepin.com.thunderspeed",
+    "deepin.org.7-zip",
+    "deepin.com.wechat",
+    "deepin.com.gtja.fuyi",
+    "deepin.net.263.em",
+    "deepin.com.qq.b.eim",
+    "deepin.cn.360.yasuo",
+    "deepin.com.qq.im",
+    "deepin.com.taobao.wangwang"
   ]
 }

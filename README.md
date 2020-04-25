@@ -71,18 +71,23 @@
    创建`/etc/apt/sources.list.d/deepin-wine.i-m.dev.list`文件，并先添加如下内容，
 
    ```
-   deb https://deepin-wine.i-m.dev/deepin/ ./
+   deb https://deepin-wine.i-m.dev/deepin/ <发型版兼容类型>/
    ```
 
-   （Debian跳过此条，）如果是Ubuntu/Mint等，还需要继续添加如下内容，
+   其中，`<发型版兼容类型>`应当替换为以下值之一：
 
-   ```
-   deb https://deepin-wine.i-m.dev/ubuntu-fix/ ./
-   ```
+   - debian-stable
+   - debian-testing
+   - ubuntu-bionic
+   - ubuntu-focal
 
-   第一条源的仓库中提供了deepin-wine环境与应用相关的软件包。
+   这需要根据Linux系统的实际发行版判断。
 
-   第二条源是一个针对Ubuntu等系统的修复，因为这些系统上的`libjpeg62-turbo`已经被`libjpeg-turbo8`取代了，这一行对应的软件仓库中提供了一个虚拟`libjpeg62-turbo`包修复解决了这个问题。所以实际上，要不要添加第二行，可以观察`apt-cache policy libjpeg62-turbo:i386`命令的输出，看看原生的软件仓库中是否提供了`libjpeg62-turbo`包再行决定。
+   例如，Linux Mint 19.3是基于Ubuntu 18.04（Bionic），所以应该填写`ubuntu-bionic`。
+
+   也有可能，有些发行版不是基于上述版本，但是“歪打正着”兼容了上述版本，可以逐一尝试。
+
+   如果都无法使用，可以在issue中提出。
 
 4. 刷新软件源
 

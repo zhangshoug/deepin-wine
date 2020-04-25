@@ -1,14 +1,27 @@
 REPO ?= repo
 
-.PHONY: all setup deepin ubuntu-fix clean FORCE
+.PHONY: all extract deploy fresh-all clean-cache clean-repo clean-all
 .PRECIOUS: %/Release %/Packages.gz
 
-all: setup ubuntu-fix deepin
-setup: $(REPO)/ $(REPO)/i-m.dev.gpg $(REPO)/setup.sh
-deepin ubuntu-fix: % : $(REPO)/%/ $(REPO)/%/InRelease $(REPO)/%/Release.gpg
+all: extract deploy
 
-clean:
+extract:
+	python3 extract_deepin_repo.py extraction_config.json $(REPO) files/ cache
+
+FILES := $(foreach d, \
+		debian-stable debian-testing ubuntu-bionic,\
+		$(foreach f, InRelease Packages Packages.gz Release Release.gpg, $(REPO)/$(d)/$(f)))
+deploy: $(FILES) $(REPO)/i-m.dev.gpg $(REPO)/setup.sh
+
+fresh-all: clean-cache all
+
+clean-cache:
+	rm -rf cache
+
+clean-repo:
 	rm -rf $(REPO)
+
+clean-all: clean-cache clean-repo
 
 %/:
 	mkdir -p $@
@@ -31,20 +44,4 @@ $(REPO)/setup.sh: $(REPO)/i-m.dev.gpg setup.template.sh
 
 %/Packages.gz: %/Packages
 	gzip -c9 $< > $@
-
-ifdef REFETCH
-$(REPO)/deepin/Packages: FORCE
-	rm -rf cache
-else
-$(REPO)/deepin/Packages:
-endif
-	python3 extract_deepin_repo.py extraction_config.json $@ files/ cache
-	mkdir -p $(REPO)/deepin/files
-
-$(REPO)/ubuntu-fix/Packages: $(foreach pkg, $(notdir $(wildcard ubuntu-fix/*)), $(REPO)/ubuntu-fix/$(pkg).deb)
-	rm -f $(filter-out $^, $(wildcard $(@D)/*.deb))
-	cd $(@D) && dpkg-scanpackages . > $(@F)
-
-$(REPO)/ubuntu-fix/%.deb: ubuntu-fix/%/DEBIAN/control
-	dpkg-deb -b ubuntu-fix/$* $(@D)
 

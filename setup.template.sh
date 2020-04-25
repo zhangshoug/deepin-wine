@@ -16,10 +16,22 @@ echo "$GPG_KEY_CONTENT" | base64 -d | sudo tee /etc/apt/trusted.gpg.d/i-m.dev.gp
 # 添加软件源
 REPO="https://deepin-wine.i-m.dev"
 LIST_FILE="/etc/apt/sources.list.d/deepin-wine.i-m.dev.list"
-echo "deb ${REPO}/deepin/ ./" | sudo tee $LIST_FILE >/dev/null
-if ! apt-cache madison libjpeg62-turbo | grep -qv $REPO; then
-    echo "deb ${REPO}/ubuntu-fix/ ./" | sudo tee -a $LIST_FILE >/dev/null
+
+has_package() {
+  apt-cache madison "$@" | grep -qv $REPO
+}
+
+if has_package libjpeg62-turbo; then
+  if has_package python-gobject; then
+    distributor=debian-stable
+  else
+    distributor=debian-testing
+  fi
+else
+  distributor=ubuntu-bionic
 fi
+
+echo "deb ${REPO}/ ${distributor}/" | sudo tee $LIST_FILE >/dev/null
 
 # 刷新软件源
 sudo apt-get update -q
